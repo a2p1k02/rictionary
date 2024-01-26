@@ -13,16 +13,22 @@ impl Dictionary {
     }
 
     pub fn add_word(&mut self) {
-        print!("add> ");
-        stdout().flush().unwrap();
-        let mut word = String::new();
-        stdin().read_line(&mut word).unwrap();
+        loop {
+            print!("add> ");
+            stdout().flush().unwrap();
+            let mut word = String::new();
+            stdin().read_line(&mut word).unwrap();
 
-        let word: Vec<&str> = word.split_whitespace().collect();
-        let original = word.get(0).unwrap().trim();
-        let translate = word.get(1).unwrap().trim();
+            if word.trim() == "exit" {
+                break;
+            } else {
+                let word: Vec<&str> = word.split_whitespace().collect();
+                let original = word.get(0).unwrap().trim();
+                let translate = word.get(1).unwrap().trim();
 
-        self.words.insert(original.to_string(), translate.to_string());
+                self.words.insert(original.to_string(), translate.to_string());
+            }
+        }
     }
 
     pub fn find_word(&mut self) {
@@ -55,7 +61,6 @@ impl Dictionary {
             "find" => Self::find_word(self),
             "remove" => Self::remove_word(self),
             "list" => Self::show_words(self),
-            "save" => Self::save(self),
             _ => println!("Command not found!"),
         }
     }
